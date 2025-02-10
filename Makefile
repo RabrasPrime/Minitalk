@@ -6,11 +6,15 @@
 #    By: tjooris <tjooris@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/20 14:10:16 by tjooris           #+#    #+#              #
-#    Updated: 2025/02/10 00:24:56 by tjooris          ###   ########.fr        #
+#    Updated: 2025/02/10 11:07:51 by tjooris          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minitalk
+
+NAME_CLT = client
+
+NAME_SRV = server
 
 #=-=-=-=-=-=-FILES-=-=-=-=-=-=#
 
@@ -20,19 +24,25 @@ BASE_DIR    :=  normal/
 
 SRC_DIR     =   src/
 
-OBJS_c        =   $(patsubst %.c, $(BUILD_DIR)%.o, $(SRC_C))
+OBJS_C        =   $(patsubst %.c, $(BUILD_DIR)%.o, $(SRC_C))
 OBJS_S        =   $(patsubst %.c, $(BUILD_DIR)%.o, $(SRC_S))
+
+OBJS_BONUS_C        =   $(patsubst %.c, $(BUILD_DIR)%.o, $(SRC_BONUS_C))
+OBJS_BONUS_S        =   $(patsubst %.c, $(BUILD_DIR)%.o, $(SRC_BONUS_S))
 
 DEPS        =   $(patsubst %.c, $(BUILD_DIR)%.d, $(SRC_C))
 DEPS        =   $(patsubst %.c, $(BUILD_DIR)%.d, $(SRC_S))
+
+DEPS_BONUS       =   $(patsubst %.c, $(BUILD_DIR)%.d, $(SRC_BONUS_C))
+DEPS_BONUS        =   $(patsubst %.c, $(BUILD_DIR)%.d, $(SRC_BONUS_S))
 
 #=-=-=-=-=-=-ROOT-=-=-=-=-=#
 
 SRC_C =   client.c
 SRC_S =   server.c
 
-SRC_C_BONUS = client_bonus.c
-SRC_S_BONUS = server_bonus.c
+SRC_BONUS_C = client_bonus.c
+SRC_BONUS_S = server_bonus.c
 
 #=-=-=-=-=-=-INCLUDES-=-=-=-=-=#
 
@@ -86,9 +96,6 @@ else ifeq ($(MODE), full-optimize)
     FLAGS += -O3
 else ifneq ($(MODE),)
     ERROR = MODE
-else ifeq ($(MODE), bonus)
-    SRC := $(SRC_BONUS)
-    NAME = $(NAME_BONUS)
 endif
 
 
@@ -100,11 +107,15 @@ endif
 
 .PHONY: all clean fclean $(MODE) re help bonus
 
-all: $(NAME)
+all: client server
 
-$(NAME): $(OBJS) $(LIB_PATH)
+client: $(OBJS_C) $(LIB_PATH)
 	@echo $(MODE) > $(MODES_TRACE)
-	$(CC) $(FLAGS) $(OBJS) $(LDFLAGS) $(LDLIB) -o $(NAME)
+	$(CC) $(FLAGS) $(OBJS_C) $(LDFLAGS) $(LDLIB) -o $(NAME_CLT)
+
+server: $(OBJS_S) $(LIB_PATH)
+	@echo $(MODE) > $(MODES_TRACE)
+	$(CC) $(FLAGS) $(OBJS_S) $(LDFLAGS) $(LDLIB) -o $(NAME_SRV)
 
 $(BUILD_DIR)%.o: $(SRC_DIR)%.c $(LIB_PATH)
 	@mkdir -p $(@D)
@@ -112,6 +123,16 @@ $(BUILD_DIR)%.o: $(SRC_DIR)%.c $(LIB_PATH)
 
 $(LIB_PATH): force
 	@$(MAKE) -C $(@D)
+
+bonus: server_bonus client_bonus
+
+client_bonus: $(OBJS_BONUS_C) $(LIB_PATH)
+	@echo $(MODE) > $(MODES_TRACE)
+	$(CC) $(FLAGS) $(OBJS_BONUS_C) $(LDFLAGS) $(LDLIB) -o $(NAME_CLT)
+
+server_bonus: $(OBJS_BONUS_S) $(LIB_PATH)
+	@echo $(MODE) > $(MODES_TRACE)
+	$(CC) $(FLAGS) $(OBJS_BONUS_S) $(LDFLAGS) $(LDLIB) -o $(NAME_SRV)
 
 .PHONY: clean
 clean:
@@ -121,7 +142,7 @@ clean:
 .PHONY: fclean
 fclean:
 	-for lib in $(dir $(LIB_PATH)); do $(MAKE) -s -C $$lib $@; done
-	rm -rf $(MAKE_DIR) $(NAME) $(NAME_BONUS)
+	rm -rf $(MAKE_DIR) $(NAME) $(NAME_BONUS) $(NAME_CLT) $(NAME_SRV)
 
 .PHONY: re
 re: fclean
@@ -144,5 +165,6 @@ print-%:
 force:
 
 -include $(DEPS)
+-include $(DEPS_BONUS)
 
 .DEFAULT_GOAL := all

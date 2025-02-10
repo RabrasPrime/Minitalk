@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 00:12:58 by tjooris           #+#    #+#             */
-/*   Updated: 2025/02/10 00:13:18 by tjooris          ###   ########.fr       */
+/*   Updated: 2025/02/10 13:12:24 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void send_bits(int process_id, char character)
             kill(process_id, SIGUSR1);
         else
             kill(process_id, SIGUSR2);
-        usleep(100);
+        usleep(500);
         bit_position++;
     }
 }
