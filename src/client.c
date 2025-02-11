@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 23:58:22 by tjooris           #+#    #+#             */
-/*   Updated: 2025/02/10 11:56:49 by tjooris          ###   ########.fr       */
+/*   Updated: 2025/02/11 18:25:15 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 			send_bits(process_id, argv[2][index]);
 			index++;
 		}
-		send_bits(process_id, '\n');
+		send_bits(process_id, '\0');
 	}
 	else
 	{
