@@ -6,15 +6,15 @@
 /*   By: tjooris <tjooris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 23:58:22 by tjooris           #+#    #+#             */
-/*   Updated: 2025/02/11 18:25:15 by tjooris          ###   ########.fr       */
+/*   Updated: 2025/02/12 17:42:41 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_minitalk.h"
 
-void send_bits(int process_id, char character)
+void	send_bits(int process_id, char character)
 {
-	int bit_position;
+	int	bit_position;
 
 	bit_position = 0;
 	while (bit_position < 8)
@@ -28,10 +28,10 @@ void send_bits(int process_id, char character)
 	}
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	int process_id;
-	int index;
+	int	process_id;
+	int	index;
 
 	index = 0;
 	if (argc == 3)
