@@ -6,12 +6,13 @@
 /*   By: tjooris <tjooris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 15:20:29 by tjooris           #+#    #+#             */
-/*   Updated: 2025/01/03 14:21:24 by tjooris          ###   ########.fr       */
+/*   Updated: 2025/02/07 14:28:19 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "get_next_line.h"
+#include "libft.h"
 
 static int	ensure_capacity(t_buffer *buffer, size_t additional_size)
 {

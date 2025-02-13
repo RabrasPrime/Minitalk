@@ -6,11 +6,12 @@
 /*   By: tjooris <tjooris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 23:58:22 by tjooris           #+#    #+#             */
-/*   Updated: 2025/02/12 17:42:41 by tjooris          ###   ########.fr       */
+/*   Updated: 2025/02/13 11:30:59 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_minitalk.h"
+#include "ft_printf.h"
 
 void	send_bits(int process_id, char character)
 {

@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 23:48:18 by tjooris           #+#    #+#             */
-/*   Updated: 2025/02/12 17:51:56 by tjooris          ###   ########.fr       */
+/*   Updated: 2025/02/13 15:27:19 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
+#include "libft.h"
 
 #define INIT_BUFFER_SIZE 128
 
@@ -33,12 +34,11 @@ static void	handle_character(char **buffer, int *index,
 	if (*index >= *buffer_size - 1)
 	{
 		*buffer_size *= 2;
-		char *new_buffer = realloc(*buffer, *buffer_size);
+		char *new_buffer = ft_realloc(*buffer, *buffer_size);
 		if (!new_buffer)
 		{
-			perror("realloc");
 			free(*buffer);
-			exit(EXIT_FAILURE);
+			ft_error();
 		}
 		*buffer = new_buffer;
 	}
@@ -79,7 +79,7 @@ int	main(void)
 
 	process_id = getpid();
 	printf("\033[94mPID\033[0m \033[96m->\033[0m %d\n", process_id);
-	printf("\033[90mWaiting for a message...\033[0m\n");
+	printf("\033[92mWaiting for a message...\033[0m\n");
 
 	while (1)
 	{

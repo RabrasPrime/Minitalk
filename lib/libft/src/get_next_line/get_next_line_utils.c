@@ -6,14 +6,15 @@
 /*   By: tjooris <tjooris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 15:20:37 by tjooris           #+#    #+#             */
-/*   Updated: 2024/12/20 20:21:53 by tjooris          ###   ########.fr       */
+/*   Updated: 2025/02/07 14:31:47 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <stddef.h>
 #include "get_next_line.h"
-
+#include "libft.h"
+/*
 void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
 	size_t	i;
@@ -63,7 +64,7 @@ void	*ft_memchr(const void *memoryBlock, int searchedChar, size_t size)
 	}
 	return (0);
 }
-
+*/
 char	*ft_strndup(char *ptr, size_t n)
 {
 	char	*line;

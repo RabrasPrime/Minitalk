@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 14:15:03 by tjooris           #+#    #+#             */
-/*   Updated: 2025/02/06 12:17:43 by tjooris          ###   ########.fr       */
+/*   Updated: 2025/02/13 11:18:46 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int		ft_isascii(int c);
 int		ft_isprint(int c);
 void	ft_free_array(char **array);
 int		ft_array_size(char	**array);
-void	error(void);
 
 /*=-=-=-=-=-=-=-=-MEM-=-=-=-=-=-=-=-=*/
 
@@ -47,6 +46,7 @@ void	*ft_memmove(void *dest, const void *src, size_t n);
 void	*ft_memset(void *s, int c, size_t n);
 void	*ft_memchr( const void *memoryBlock, int searchedChar, size_t size );
 int		ft_memcmp( const void *pointer1, const void *pointer2, size_t size );
+void	*ft_realloc(void *ptr, size_t new_size);
 
 /*=-=-=-=-=-=-=-=-PUT-=-=-=-=-=-=-=-=*/
 
