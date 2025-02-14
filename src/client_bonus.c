@@ -6,19 +6,12 @@
 /*   By: tjooris <tjooris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 00:12:58 by tjooris           #+#    #+#             */
-/*   Updated: 2025/02/13 15:26:37 by tjooris          ###   ########.fr       */
+/*   Updated: 2025/02/14 11:56:25 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_minitalk.h"
-
-static void	acknowledge_signal(int signal)
-{
-	if (signal == SIGUSR1)
-		ft_printf("\033[0;32mAcknowledged!\033[0;32m\n");
-	else
-		ft_printf("\033[0;32mAcknowledged!\033[0;32m\n");
-}
+#include "ft_printf.h"
 
 void	send_bits(int process_id, char character)
 {
@@ -47,17 +40,15 @@ int	main(int argc, char **argv)
 		process_id = ft_atoi(argv[1]);
 		while (argv[2][index] != '\0')
 		{
-			signal(SIGUSR1, acknowledge_signal);
-			signal(SIGUSR2, acknowledge_signal);
 			send_bits(process_id, argv[2][index]);
 			index++;
 		}
-		send_bits(process_id, '\n');
+		send_bits(process_id, '\0');
 	}
 	else
 	{
 		ft_printf("\033[91mError: wrong format.\033[0m\n");
-		ft_printf("\033[33mTry: ./client_bonus [PID] [MESSAGE]\033[0m\n");
+		ft_printf("\033[33mTry: ./client <PID> <MESSAGE>\033[0m\n");
 		return (1);
 	}
 	return (0);
