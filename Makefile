@@ -6,7 +6,7 @@
 #    By: tjooris <tjooris@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/20 14:10:16 by tjooris           #+#    #+#              #
-#    Updated: 2025/02/10 11:07:51 by tjooris          ###   ########.fr        #
+#    Updated: 2025/02/16 23:48:31 by tjooris          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,11 +38,11 @@ DEPS_BONUS        =   $(patsubst %.c, $(BUILD_DIR)%.d, $(SRC_BONUS_S))
 
 #=-=-=-=-=-=-ROOT-=-=-=-=-=#
 
-SRC_C =   client.c
-SRC_S =   server.c
+SRC_C =   client.c minitalk.c
+SRC_S =   server.c minitalk.c
 
-SRC_BONUS_C = client_bonus.c
-SRC_BONUS_S = server_bonus.c
+SRC_BONUS_C = client_bonus.c minitalk.c
+SRC_BONUS_S = server_bonus.c minitalk.c
 
 #=-=-=-=-=-=-INCLUDES-=-=-=-=-=#
 

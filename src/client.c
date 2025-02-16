@@ -6,67 +6,68 @@
 /*   By: tjooris <tjooris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 23:58:22 by tjooris           #+#    #+#             */
-/*   Updated: 2025/02/14 16:38:55 by tjooris          ###   ########.fr       */
+/*   Updated: 2025/02/16 23:40:53 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <signal.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include "ft_minitalk.h"
-#include "ft_printf.h"
 
-volatile sig_atomic_t g_ack = 0;
-
-void	signal_handler(int signal)
+static void	signal_handler(int signal)
 {
-	(void)signal;
-	g_ack = 1;
+	if (signal == SIGUSR1)
+		ft_putstr_fd("\e[33m > ACK signal received from server\n\e[0m",
+			STDOUT_FILENO);
+	else if (signal == SIGUSR2)
+	{
+		ft_putstr_fd("\e[92m > End of message signal received from server\n\e[0m",
+			STDOUT_FILENO);
+		exit(EXIT_SUCCESS);
+	}
 }
 
-void	send_bits(int process_id, char character)
+static void	send_message_to_server(int server_pid, char *message)
 {
-	int	bit_position;
+	int	index;
 
-	bit_position = 0;
-	while (bit_position < 8)
+	index = 0;
 	{
-		g_ack = 0;
-		if ((character & (0x01 << bit_position)) != 0)
-			kill(process_id, SIGUSR1);
-		else
-			kill(process_id, SIGUSR2);
-		while (!g_ack)
-			pause();
-		bit_position++;
+		ft_putstr_fd("\e[92mSending length = [", STDOUT_FILENO);
+		ft_putnbr_fd(ft_strlen(message), STDOUT_FILENO);
+		ft_putstr_fd("]\n\e[0m", STDOUT_FILENO);
+		send_int(server_pid, ft_strlen(message));
+		ft_putstr_fd("\e[92mSending message\n\e[0m", STDOUT_FILENO);
+		while (message[index] != '\0')
+			send_char(server_pid, message[index++]);
+		ft_putstr_fd("\e[92mSending null string terminator\n\e[0m", STDOUT_FILENO);
+		send_char(server_pid, '\0');
 	}
 }
 
 int	main(int argc, char **argv)
-{
-	int					process_id;
-	int					index;
-	struct sigaction	sa;
+{	
+	struct sigaction	client_signal;
 
 	if (argc != 3)
 	{
-		ft_printf("\033[91mError: wrong format.\033[0m\n");
-		ft_printf("\033[33mTry: ./client <PID> <MESSAGE>\033[0m\n");
-		return (1);
+		ft_putstr_fd("\e[31m## Error - Incorrect syntax ##\n\e[0m", STDOUT_FILENO);
+		ft_putstr_fd(
+			"\e[92m./client <server PID> <message to send>\n\e[0m",
+			STDOUT_FILENO);
+		return (EXIT_FAILURE);
 	}
-
-	sa.sa_handler = signal_handler;
-	sa.sa_flags = 0;
-	sigemptyset(&sa.sa_mask);
-	sigaction(SIGUSR1, &sa, NULL);
-
-	process_id = ft_atoi(argv[1]);
-	index = 0;
-	while (argv[2][index] != '\0')
+	else if (kill(ft_atoi(argv[1]), 0) < 0)
 	{
-		send_bits(process_id, argv[2][index]);
-		index++;
+		ft_putstr_fd("\e[31m## Error - Invalid PID ##\n\e[0m", STDOUT_FILENO);
+		return (EXIT_FAILURE);
 	}
-	send_bits(process_id, '\0');
-	return (0);
+	sigemptyset(&client_signal.sa_mask);
+	client_signal.sa_flags = SA_RESTART;
+	client_signal.sa_handler = signal_handler;
+	configure_sigaction_signals(&client_signal);
+	ft_putstr_fd("\e[92mClient [PID = ", STDOUT_FILENO);
+	ft_putnbr_fd(getpid(), STDOUT_FILENO);
+	ft_putstr_fd("]\n\e[0m", STDOUT_FILENO);
+	send_message_to_server(ft_atoi(argv[1]), argv[2]);
+	return (EXIT_SUCCESS);
 }
+

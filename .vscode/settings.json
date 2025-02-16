@@ -2,6 +2,12 @@
 	"files.associations": {
 		"ft_printf.h": "c",
 		"stdlib.h": "c",
-		"string.h": "c"
+		"string.h": "c",
+		"array": "c",
+		"string": "c",
+		"string_view": "c",
+		"cstdlib": "c",
+		"ft_minitalk.h": "c",
+		"signal.h": "c"
 	}
 }
