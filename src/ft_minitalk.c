@@ -6,63 +6,63 @@
 /*   By: tjooris <tjooris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 23:24:18 by tjooris           #+#    #+#             */
-/*   Updated: 2025/02/16 23:54:39 by tjooris          ###   ########.fr       */
+/*   Updated: 2025/02/17 08:58:26 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_minitalk.h"
 
-void	setup_signal_handlers(struct sigaction *signal_action)
+void	configure_sigaction_signals(struct sigaction *sa)
 {
-	if (sigaction(SIGUSR1, signal_action, NULL) < 0)
+	if (sigaction(SIGUSR1, sa, NULL) < 0)
 	{
-		ft_putstr_fd("\e[31m## Error - Could not setup SIGUSR1 ##\n\e[0m",
+		ft_putstr_fd("\e[31m## error - could not setup SIGUSR1 ##\n\e[0m",
 			STDOUT_FILENO);
 		exit(EXIT_FAILURE);
 	}
-	if (sigaction(SIGUSR2, signal_action, NULL) < 0)
+	if (sigaction(SIGUSR2, sa, NULL) < 0)
 	{
-		ft_putstr_fd("\e[31m## Error - Could not setup SIGUSR2 ##\n\e[0m",
+		ft_putstr_fd("\e[31m## error - could not setup SIGUSR2 ##\n\e[0m",
 			STDOUT_FILENO);
 		exit(EXIT_FAILURE);
 	}
 }
 
-void	send_integer(pid_t pid, int number)
+void	send_int(pid_t pid, int num)
 {
-	int		bit_position;
+	int		shift;
 	char	bit;
 
-	bit_position = (sizeof(int) * 8) - 1;
-	while (bit_position >= 0)
+	shift = (sizeof(int) * 8) - 1;
+	while (shift >= 0)
 	{
-		bit = (number >> bit_position) & 1;
-		send_signal_bit(pid, bit, 1);
-		bit_position--;
+		bit = (num >> shift) & 1;
+		send_bit(pid, bit, 1);
+		shift--;
 	}
 }
 
-void	send_character(pid_t pid, char character)
+void	send_char(pid_t pid, char c)
 {
-	int		bit_position;
+	int		shift;
 	char	bit;
 
-	bit_position = (sizeof(char) * 8) - 1;
-	while (bit_position >= 0)
+	shift = (sizeof(char) * 8) - 1;
+	while (shift >= 0)
 	{
-		bit = (character >> bit_position) & 1;
-		send_signal_bit(pid, bit, 1);
-		bit_position--;
+		bit = (c >> shift) & 1;
+		send_bit(pid, bit, 1);
+		shift--;
 	}
 }
 
-void	send_signal_bit(pid_t pid, char bit, char should_pause)
+void	send_bit(pid_t pid, char bit, char flag_to_pause)
 {
 	if (bit == 0)
 	{
 		if (kill(pid, SIGUSR1) < 0)
 		{
-			ft_putstr_fd("\e[31m## Error - Sending SIGUSR1 ##\n\e[0m",
+			ft_putstr_fd("\e[31m## error - sending SIGUSR1 ##\n\e[0m",
 				STDOUT_FILENO);
 			exit(EXIT_FAILURE);
 		}
@@ -71,11 +71,11 @@ void	send_signal_bit(pid_t pid, char bit, char should_pause)
 	{
 		if (kill(pid, SIGUSR2) < 0)
 		{
-			ft_putstr_fd("\e[31m## Error - Sending SIGUSR2 ##\n\e[0m",
+			ft_putstr_fd("\e[31m## error - sending SIGUSR2 ##\n\e[0m",
 				STDOUT_FILENO);
 			exit(EXIT_FAILURE);
 		}
 	}
-	if (should_pause != 0)
+	if (flag_to_pause != 0)
 		pause();
 }

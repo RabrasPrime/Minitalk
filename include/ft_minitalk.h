@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 23:48:51 by tjooris           #+#    #+#             */
-/*   Updated: 2025/02/16 23:54:38 by tjooris          ###   ########.fr       */
+/*   Updated: 2025/02/17 08:57:42 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,17 @@
 # include <signal.h> 
 # include <stdlib.h> 
 
-void    setup_signal_handlers(struct sigaction *signal_action);
-void    send_integer(pid_t pid, int number);
-void    send_character(pid_t pid, char character);
-void    send_signal_bit(pid_t pid, char bit, char should_pause);
+void	configure_sigaction_signals(struct sigaction *sa);
+void	send_int(pid_t pid, int num);
+void	send_char(pid_t pid, char c);
+void	send_bit(pid_t pid, char bit, char flag_to_pause);
 
 typedef struct s_protocol
 {
-    int     bits;
-    int     data;
-    int     flag;
-    char    *message;
-}           t_protocol;
+	int		bits;
+	int		data;
+	int		flag;
+	char	*message;
+}	
 
 #endif

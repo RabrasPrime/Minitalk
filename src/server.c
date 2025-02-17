@@ -6,82 +6,82 @@
 /*   By: tjooris <tjooris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 23:48:18 by tjooris           #+#    #+#             */
-/*   Updated: 2025/02/16 23:40:52 by tjooris          ###   ########.fr       */
+/*   Updated: 2025/02/17 08:59:54 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_minitalk.h"
 
-static void	check_if_message_finished(
-	t_protocol *server, int *index, pid_t client_pid)
+static void	server_is_message_finished(
+	t_protocol *t_server, int *i, pid_t client_pid)
 {
-	if (server->bit_count == 8 && server->is_receiving_message)
+	if (t_server->bits == 8 && t_server->flag == 1)
 	{
-		server->message[*index] = server->data;
-		(*index)++;
-		if (server->data == '\0')
+		t_server->message[*i] = t_server->data;
+		(*i)++;
+		if (t_server->data == '\0')
 		{
-			ft_putstr_fd("\e[92mReceived message: [", STDOUT_FILENO);
-			ft_putstr_fd(server->message, STDOUT_FILENO);
+			ft_putstr_fd("\e[92mreceived message = [", STDOUT_FILENO);
+			ft_putstr_fd(t_server->message, STDOUT_FILENO);
 			ft_putstr_fd("]\n\e[0m", STDOUT_FILENO);
-			free(server->message);
-			server->message = NULL;
-			server->is_receiving_message = 0;
-			*index = 0;
+			free(t_server->message);
+			t_server->message = NULL;
+			t_server->flag = 0;
+			*i = 0;
 			send_bit(client_pid, 1, 0);
 		}
-		server->bit_count = 0;
+		t_server->bits = 0;
 	}
 }
 
-static void	check_if_length_received(t_protocol *server)
+static void	server_is_str_length_finished(t_protocol *t_server)
 {
-	if (server->bit_count == sizeof(int) * 8 && !server->is_receiving_message)
+	if (t_server->bits == sizeof(int) * 8 && t_server->flag == 0)
 	{
-		server->is_receiving_message = 1;
-		ft_putstr_fd("\e[92mReceived length: [", STDOUT_FILENO);
-		ft_putnbr_fd(server->data, STDOUT_FILENO);
+		t_server->flag = 1;
+		ft_putstr_fd("\e[92mreceived length = [", STDOUT_FILENO);
+		ft_putnbr_fd(t_server->data, STDOUT_FILENO);
 		ft_putstr_fd("]\n\e[0m", STDOUT_FILENO);
-		server->message = ft_calloc(server->data + 1, sizeof(char));
-		if (!server->message)
+		t_server->message = ft_calloc(t_server->data + 1, sizeof(char));
+		if (t_server->message == NULL)
 		{
-			ft_putstr_fd("\e[31m## Error - ft_calloc() ##\n\e[0m", STDOUT_FILENO);
+			ft_putstr_fd("\e[31m## error - ft_calloc() ##\n\e[0m", STDOUT_FILENO);
 			exit(EXIT_FAILURE);
 		}
-		server->message[server->data] = '\0';
-		server->bit_count = 0;
+		t_server->message[t_server->data] = '\0';
+		t_server->bits = 0;
 	}
 }
 
-static void	signal_handler(int signal, siginfo_t *info, void *context)
+static void	server_handler(int num, siginfo_t *info, void *context)
 {
-	static t_protocol	server;
-	static int		message_index;
+	static t_protocol	t_server;
+	static int			i;
 
 	usleep(WAIT_US);
 	(void)context;
 	(void)info;
-	if (server.bit_count == 0)
-		server.data = 0;
-	if (signal == SIGUSR2 && !server.is_receiving_message)
-		server.data |= 1 << (((sizeof(int) * 8) - 1) - server.bit_count);
-	else if (signal == SIGUSR2 && server.is_receiving_message)
-		server.data |= 1 << (((sizeof(char) * 8) - 1) - server.bit_count);
-	server.bit_count++;
-	check_if_length_received(&server);
-	check_if_message_finished(&server, &message_index, info->si_pid);
+	if (t_server.bits == 0)
+		t_server.data = 0;
+	if (num == SIGUSR2 && t_server.flag == 0)
+		t_server.data |= 1 << (((sizeof(int) * 8) - 1) - t_server.bits);
+	else if (num == SIGUSR2 && t_server.flag == 1)
+		t_server.data |= 1 << (((sizeof(char) * 8) - 1) - t_server.bits);
+	t_server.bits++;
+	server_is_str_length_finished(&t_server);
+	server_is_message_finished(&t_server, &i, info->si_pid);
 	send_bit(info->si_pid, 0, 0);
 }
 
 int	main(void)
 {
-	struct sigaction	signal_config;
+	struct sigaction	s_server;
 
-	sigemptyset(&signal_config.sa_mask);
-	signal_config.sa_sigaction = signal_handler;
-	signal_config.sa_flags = SA_SIGINFO | SA_RESTART;
-	configure_sigaction_signals(&signal_config);
-	ft_putstr_fd("\e[92mServer [PID = ", STDOUT_FILENO);
+	sigemptyset(&s_server.sa_mask);
+	s_server.sa_sigaction = server_handler;
+	s_server.sa_flags = SA_SIGINFO | SA_RESTART;
+	configure_sigaction_signals(&s_server);
+	ft_putstr_fd("\e[92mserver [PID = ", STDOUT_FILENO);
 	ft_putnbr_fd(getpid(), STDOUT_FILENO);
 	ft_putstr_fd("]\n\e[0m", STDOUT_FILENO);
 	while (1)
@@ -90,5 +90,3 @@ int	main(void)
 	}
 	return (EXIT_SUCCESS);
 }
-
-
