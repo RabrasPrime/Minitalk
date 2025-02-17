@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 23:48:51 by tjooris           #+#    #+#             */
-/*   Updated: 2025/02/17 08:57:42 by tjooris          ###   ########.fr       */
+/*   Updated: 2025/02/17 09:02:27 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@ typedef struct s_protocol
 	int		data;
 	int		flag;
 	char	*message;
-}	
+}			t_protocol;
 
 #endif
