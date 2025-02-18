@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 23:48:18 by tjooris           #+#    #+#             */
-/*   Updated: 2025/02/17 08:59:54 by tjooris          ###   ########.fr       */
+/*   Updated: 2025/02/17 13:36:59 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ static void	server_is_str_length_finished(t_protocol *t_server)
 		t_server->message = ft_calloc(t_server->data + 1, sizeof(char));
 		if (t_server->message == NULL)
 		{
-			ft_putstr_fd("\e[31m## error - ft_calloc() ##\n\e[0m", STDOUT_FILENO);
+			ft_putstr_fd("\e[31m## error - ft_calloc() ##\n\e[0m",
+				STDOUT_FILENO);
 			exit(EXIT_FAILURE);
 		}
 		t_server->message[t_server->data] = '\0';

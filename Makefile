@@ -6,7 +6,7 @@
 #    By: tjooris <tjooris@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/20 14:10:16 by tjooris           #+#    #+#              #
-#    Updated: 2025/02/16 23:48:31 by tjooris          ###   ########.fr        #
+#    Updated: 2025/02/17 13:25:32 by tjooris          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,11 +38,22 @@ DEPS_BONUS        =   $(patsubst %.c, $(BUILD_DIR)%.d, $(SRC_BONUS_S))
 
 #=-=-=-=-=-=-ROOT-=-=-=-=-=#
 
-SRC_C =   client.c minitalk.c
-SRC_S =   server.c minitalk.c
+SRC_C =   client.c
+SRC_S =   server.c
 
-SRC_BONUS_C = client_bonus.c minitalk.c
-SRC_BONUS_S = server_bonus.c minitalk.c
+SRC_BONUS_C = client_bonus.c
+SRC_BONUS_S = server_bonus.c
+
+#=-=-=-=-=-=-MINITALK-=-=-=-=-=#
+
+SRC_C	+=	$(addprefix $(MINITALK_DIR), $(MINITALK_SRC))
+SRC_S	+=	$(addprefix $(MINITALK_DIR), $(MINITALK_SRC))
+
+SRC_BONUS_C	+=	$(addprefix $(MINITALK_DIR), $(MINITALK_SRC))
+SRC_BONUS_S	+=	$(addprefix $(MINITALK_DIR), $(MINITALK_SRC))
+
+MINITALK_DIR =	utils/
+MINITALK_SRC =	ft_minitalk.c \
 
 #=-=-=-=-=-=-INCLUDES-=-=-=-=-=#
 

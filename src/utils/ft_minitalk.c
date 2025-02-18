@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 23:24:18 by tjooris           #+#    #+#             */
-/*   Updated: 2025/02/17 08:58:26 by tjooris          ###   ########.fr       */
+/*   Updated: 2025/02/18 09:56:07 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	send_char(pid_t pid, char c)
 	}
 }
 
-void	send_bit(pid_t pid, char bit, char flag_to_pause)
+void	send_bit(pid_t pid, char bit, char flag)
 {
 	if (bit == 0)
 	{
@@ -76,6 +76,6 @@ void	send_bit(pid_t pid, char bit, char flag_to_pause)
 			exit(EXIT_FAILURE);
 		}
 	}
-	if (flag_to_pause != 0)
+	if (flag != 0)
 		pause();
 }

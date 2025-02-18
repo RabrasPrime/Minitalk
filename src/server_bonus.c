@@ -6,11 +6,11 @@
 /*   By: tjooris <tjooris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 00:10:56 by tjooris           #+#    #+#             */
-/*   Updated: 2025/02/17 09:00:19 by tjooris          ###   ########.fr       */
+/*   Updated: 2025/02/17 13:37:26 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_pushswap.h"
+#include "ft_minitalk.h"
 
 static void	server_is_message_finished(
 	t_protocol *t_server, int *i, pid_t client_pid)
@@ -45,7 +45,8 @@ static void	server_is_str_length_finished(t_protocol *t_server)
 		t_server->message = ft_calloc(t_server->data + 1, sizeof(char));
 		if (t_server->message == NULL)
 		{
-			ft_putstr_fd("\e[31m## error - ft_calloc() ##\n\e[0m", STDOUT_FILENO);
+			ft_putstr_fd("\e[31m## error - ft_calloc() ##\n\e[0m",
+				STDOUT_FILENO);
 			exit(EXIT_FAILURE);
 		}
 		t_server->message[t_server->data] = '\0';

@@ -6,7 +6,7 @@
 /*   By: tjooris <tjooris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 23:48:51 by tjooris           #+#    #+#             */
-/*   Updated: 2025/02/17 09:02:27 by tjooris          ###   ########.fr       */
+/*   Updated: 2025/02/18 09:56:05 by tjooris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 void	configure_sigaction_signals(struct sigaction *sa);
 void	send_int(pid_t pid, int num);
 void	send_char(pid_t pid, char c);
-void	send_bit(pid_t pid, char bit, char flag_to_pause);
+void	send_bit(pid_t pid, char bit, char flag);
 
 typedef struct s_protocol
 {
